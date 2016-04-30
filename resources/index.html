@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Carp Chat Demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <style>
+      .chat-input{
+        position: relative;
+        bottom: 0;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CARP Demo</a>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+          <form style="margin-top:8px" action="">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="input-group">
+                  <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Message...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" id="sent" type="submit">Send the message</button>
+                  </span>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row" style="margin: 64px 0">
+        <div class="col-lg-12">
+          <ul id="messages" class="list-group"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var socket = io();
+      var counter = 0;
+      $('form').submit(function(event){
+        socket.emit(
+          'action',
+          {
+            type: 'message',
+            payload: $('#m').val()
+          }
+        );
+        $('#m').val('');
+        return false;
+      });
+
+      setInterval(function(){
+        console.log("counter: " + counter);
+      }, 1000)
+
+      socket.on('action', function(message){
+        console.log(message.payload)
+        counter++;
+        $('#messages').append($('<li class="list-group-item">').text(message.payload));
+      });
+
+      socket.on('info', function(msg){
+        $('#sent').popover({
+          title: 'info',
+          content: msg,
+          placement: 'top',
+        })
+        $('#sent').popover('show')
+        setTimeout(function(){ $('#sent').popover('hide') }, 2000)
+
+        $('#messages').append($('<li class="list-group-item">').text(msg));
+        console.info(msg);
+      });
+
+    </script>
+
+  </body>
+</html>

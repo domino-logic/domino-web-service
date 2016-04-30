@@ -1,0 +1,30 @@
+apps:
+  - script: socket.coffee
+    name: socket-8001
+    watch: true
+    env:
+      PORT: 8001
+
+  - script: socket.coffee
+    name: socket-8002
+    watch: true
+    env:
+      PORT: 8002
+
+  - script: socket.coffee
+    name: socket-8003
+    watch: true
+    env:
+      PORT: 8003
+
+  - script: socket.coffee
+    name: socket-8004
+    watch: true
+    env:
+      PORT: 8004
+
+  - script: http.coffee
+    name: Web server
+    watch: true
+    env:
+      PORT: 3000
