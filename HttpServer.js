@@ -11,11 +11,10 @@ class HttpServer {
 
     this.server = http.createServer( this.handleRequest.bind(this) )
     this.messenger = new Messenger(options)
-
-    console.log(`Starting HTTP on port ${this.options.port}`);
   }
 
   start () {
+    console.log(`Starting HTTP on port ${this.options.port}`);
     this.server.listen(this.options.port || 3000);
   }
 
