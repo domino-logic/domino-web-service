@@ -34,19 +34,26 @@ class SocketServer {
     )
   }
 
-  subscribe (body) {
-    console.log(body)
+  subscribe (eventQueue, key) {
+    eventQueue.subscribe(key)
+    console.log(`Subscribed to ${key}`)
   }
 
-  unsubscribe (body) {
-    console.log(body)
+  unsubscribe (eventQueue, key) {
+    eventQueue.unsubscribe(key)
+    console.log(`Unsubscribed to ${key}`)
   }
 
   initConnection(socket){
     console.log(`New connection...`);
+
+    const eventQueue = this.messenger.eventQueue()
+
+    eventQueue.onUpdate( (body) => socket.emit('change', body) )
+
     socket.on('action', this.createAction.bind(this));
-    socket.on('subscribe', this.subscribe.bind(this));
-    socket.on('unsubscribe', this.unsubscribe.bind(this));
+    socket.on('subscribe', this.subscribe.bind(this, eventQueue));
+    socket.on('unsubscribe', this.unsubscribe.bind(this, eventQueue));
   }
 }
 
