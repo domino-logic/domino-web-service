@@ -35,7 +35,7 @@ class Messenger {
       {persistent: true}
     );
 
-    console.log(`Published message to ${json.type}@${queue}: `, json.payload);
+    console.log(`Published message to ${queue}: `, json.payload);
   }
 
   assertQueue (queue) {

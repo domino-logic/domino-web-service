@@ -9,11 +9,18 @@ class SocketServer {
     this.options = options || {};
     this.messenger = new Messenger(options)
     this.io = SocketIO(options.port || 6001)
-    this.publish_queue = this.options.publish_queue || 'domino_action';
+    this.actionQueue = this.options.actionQueue || 'domino_action';
+  }
+
+  getActionQueue (actionName) {
+    return `${this.actionQueue}.${actionName}`
   }
 
   createAction (body) {
-    this.messenger.publish(this.publish_queue, body)
+    this.messenger.publish(
+      this.getActionQueue(body.type),
+      body
+    )
   }
 
   start () {
