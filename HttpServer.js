@@ -2,20 +2,25 @@
 
 
 const http = require('http');
-const Messenger = require('./Messenger')
+const DRM = require('domino-rabbitmq-messenger');
 
 class HttpServer {
   constructor (options) {
     this.options = options || {};
     this.publish_queue = this.options.publish_queue || 'domino_action';
-
+    this.messenger = new DRM.Messenger(options)
     this.server = http.createServer( this.handleRequest.bind(this) )
-    this.messenger = new Messenger(options)
   }
 
-  start () {
-    console.log(`Starting HTTP on port ${this.options.port}`);
-    this.server.listen(this.options.port || 3000);
+  start (callback) {
+    this.messenger.start( (err, messenger) => {
+      if(err && callback) return callback(err)
+
+      console.log(`Starting HTTP on port ${this.options.port}`);
+      this.server.listen(this.options.port || 3000);
+
+      if(callback) callback(null, this);
+    })
   }
 
   createAction (params) {

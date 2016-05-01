@@ -28,6 +28,10 @@
   "homepage": "https://github.com/domino-logic/domino-web-service#readme",
   "dependencies": {
     "amqplib": "^0.4.1",
+    "domino-rabbitmq-messenger": "git+https://github.com/domino-logic/domino-rabbitmq-messenger.git",
     "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "domino-rabbitmq-messenger": "git+https://github.com/domino-logic/domino-rabbitmq-messenger.git"
   }
 }

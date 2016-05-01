@@ -17,7 +17,7 @@ if(cluster.isMaster){
   new DWS.createSocketServer({port: 6004}).start()
 
   cluster.on('exit', (worker, code, signal) => {
-    console.log("worker #{worker.process.pid} died")
+    console.log(`worker ${worker.process.pid} died`)
   });
 }
 
