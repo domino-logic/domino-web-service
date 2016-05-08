@@ -22,4 +22,4 @@ if(cluster.isMaster){
 }
 
 else
-  new DWS.createHttpServer({port: 8081}).start()
+  new DWS.createHttpServer({staticFolder: 'static', port: 8081}).start()
