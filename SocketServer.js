@@ -21,6 +21,8 @@ class SocketServer {
 
       if(callback) return callback(null, this);
     })
+
+    return this
   }
 
   getActionQueue (actionName) {

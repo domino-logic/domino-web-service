@@ -21,6 +21,8 @@ class HttpServer {
 
       if(callback) callback(null, this);
     })
+
+    return this
   }
 
   createAction (params) {
