@@ -16,7 +16,7 @@ class SocketServer {
     this.messenger.start( (err, messenger) => {
       if(err && callback) return callback(err)
 
-      console.log(`Starting Socket on port ${this.options.port}`);
+      console.log(`Starting Socket...`);
       this.io.on('connection', this.initConnection.bind(this));
 
       if(callback) return callback(null, this);
