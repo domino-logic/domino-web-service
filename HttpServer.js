@@ -10,7 +10,7 @@ class HttpServer {
     this.messenger = new DRM.Messenger(this.options)
     this.server = http.createServer( this.handleRequest.bind(this) )
     this.actionQueue = this.options.actionQueue || 'domino_action'
-    this.this.staticFolder = this.options.this.staticFolder
+    this.staticFolder = this.options.staticFolder
 
   }
 
