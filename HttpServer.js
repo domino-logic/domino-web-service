@@ -10,6 +10,8 @@ class HttpServer {
     this.messenger = new DRM.Messenger(this.options)
     this.server = http.createServer( this.handleRequest.bind(this) )
     this.actionQueue = this.options.actionQueue || 'domino_action'
+    this.this.staticFolder = this.options.this.staticFolder
+
   }
 
   start (callback) {
@@ -21,6 +23,10 @@ class HttpServer {
 
       if(callback) callback(null, this)
     })
+
+    if(this.staticFolder){
+      console.log(`Serving static at ${this.staticFolder}`)
+    }
 
     return this
   }
@@ -61,18 +67,22 @@ class HttpServer {
         return response.end(`Error loading ${request.url}`)
       }
       response.statusCode = 200
-      response.setHeader('Content-Type', 'application/json')
       response.end(data)
     }
 
-    fs.readFile(this.options.staticFolder + request.url, readFile)
+    var url = request.url
+    if(/\/$/.test(url)){
+      url += 'index.html';
+    }
+
+    fs.readFile(this.staticFolder + url, readFile)
   }
 
   handleRequest (request, response) {
     const method = request.method
     const body = []
 
-    if (method === 'GET' && this.options.staticFolder){
+    if (method === 'GET' && this.staticFolder){
       this.handleGet(request, response)
     }
 
