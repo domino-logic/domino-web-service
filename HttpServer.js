@@ -8,7 +8,7 @@ class HttpServer {
   constructor (options) {
     this.options = options || {};
     this.publish_queue = this.options.publish_queue || 'domino_action';
-    this.messenger = new DRM.Messenger(options)
+    this.messenger = new DRM.Messenger(this.options)
     this.server = http.createServer( this.handleRequest.bind(this) )
   }
 

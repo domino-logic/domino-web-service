@@ -7,8 +7,8 @@ const DRM = require('domino-rabbitmq-messenger');
 class SocketServer {
   constructor (options) {
     this.options = options || {}
-    this.messenger = new DRM.Messenger(options)
-    this.io = SocketIO(options.port || 6001)
+    this.messenger = new DRM.Messenger(this.options)
+    this.io = SocketIO(this.options.port || this.options.app)
     this.actionQueue = this.options.actionQueue || 'domino_action';
   }
 
