@@ -30,11 +30,14 @@ class SocketServer {
     return `${this.actionQueue}.${actionName}`
   }
 
-  createAction (responseQueue, body) {
+  createAction (responseQueue, msg) {
     this.messenger.publish(
-      this.getActionQueue(body.type),
-      body,
-      {replyTo: responseQueue.queue}
+      this.getActionQueue(msg.type),
+      msg,
+      {
+        replyTo: responseQueue.queue,
+        correlationId: msg.corr
+      }
     )
   }
 
@@ -54,8 +57,8 @@ class SocketServer {
     const eventQueue = this.messenger.eventQueue()
     const responseQueue = this.messenger.responseQueue()
 
-    eventQueue.onUpdate( (body) => socket.emit('change', body) )
-    responseQueue.onUpdate( (body) => socket.emit('response', body) )
+    eventQueue.onUpdate( (msg) => socket.emit('change', msg) )
+    responseQueue.onUpdate( (msg) => socket.emit('response', msg) )
 
     socket.on('action', this.createAction.bind(this, responseQueue))
     socket.on('subscribe', this.subscribe.bind(this, eventQueue))
