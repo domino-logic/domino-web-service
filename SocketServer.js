@@ -30,10 +30,11 @@ class SocketServer {
     return `${this.actionQueue}.${actionName}`
   }
 
-  createAction (body) {
+  createAction (responseQueue, body) {
     this.messenger.publish(
       this.getActionQueue(body.type),
-      body
+      body,
+      responseQueue
     )
   }
 
@@ -51,10 +52,12 @@ class SocketServer {
     console.log(`New connection...`)
 
     const eventQueue = this.messenger.eventQueue()
+    const responseQueue = this.messenger.responseQueue()
 
     eventQueue.onUpdate( (body) => socket.emit('change', body) )
+    responseQueue.onUpdate( (body) => socket.emit('response', body) )
 
-    socket.on('action', this.createAction.bind(this))
+    socket.on('action', this.createAction.bind(this, responseQueue))
     socket.on('subscribe', this.subscribe.bind(this, eventQueue))
     socket.on('unsubscribe', this.unsubscribe.bind(this, eventQueue))
   }
