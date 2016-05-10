@@ -34,7 +34,7 @@ class SocketServer {
     this.messenger.publish(
       this.getActionQueue(body.type),
       body,
-      responseQueue
+      {replyTo: responseQueue.queue}
     )
   }
 
