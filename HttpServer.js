@@ -11,7 +11,6 @@ class HttpServer {
     this.server = http.createServer( this.handleRequest.bind(this) )
     this.actionQueue = this.options.actionQueue || 'domino_action'
     this.staticFolder = this.options.staticFolder
-
   }
 
   start (callback) {
@@ -71,6 +70,7 @@ class HttpServer {
     }
 
     var url = request.url
+    // if URL ends with a / we will load index.html from that folder
     if(/\/$/.test(url)){
       url += 'index.html';
     }
